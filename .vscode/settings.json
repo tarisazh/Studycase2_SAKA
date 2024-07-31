@@ -3,4 +3,7 @@
     "editor.formatOnSave": true,
     "css.validate": false,
     "scss.validate": false,
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
 }

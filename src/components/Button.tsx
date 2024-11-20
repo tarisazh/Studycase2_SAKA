@@ -15,7 +15,7 @@ const Button: React.FC<ButtonProps> = ({ variant, children }) => {
     }[variant];
 
     return (
-        <button className={["py-2 px-4 rounded-full text-white", variants].join(" ")}>
+        <button className={`py-2 px-4 rounded-full text-white ${variants}`}>
             {children}
         </button>
     );

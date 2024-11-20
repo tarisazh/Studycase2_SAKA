@@ -1,23 +1,24 @@
 import React from "react";
 
-export type ColumnDefs = {
+export type ColumnDefs<T> = {
     title: string;
 } & (
         | {
-            field: string;
+            field: keyof T;
         }
         | {
-            render: (rowData: Record<string, any>) => React.ReactNode;
+            render: (rowData: T) => React.ReactNode;
         }
     );
 
-const Table = ({
-    columnDefs,
-    data,
-}: {
-    columnDefs: ColumnDefs[];
-    data: Record<string, any>[];
-}) => {
+interface TableProps<T> {
+    columnDefs: ColumnDefs<T>[];
+    data: T[];
+    onEdit?: (newData: T[]) => void;
+}
+
+const Table = <T,> ({ columnDefs,data}: TableProps<T>) => {
+
     return (
         <table className="min-w-full divide-y overflow-hidden rounded-lg divide-gray-800 shadow-lg">
             <thead className="bg-green-200">
@@ -30,11 +31,11 @@ const Table = ({
                 </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-                {data.map((rowData, index) => (
-                    <tr key={index} className="cursor-pointer hover:bg-gray-100">
-                        {columnDefs.map((column, index) => (
-                            <td key={index} className="px-6 py-4 whitespace-nowrap">
-                                {"field" in column ? rowData[column.field!] : column.render ? column.render(rowData) : null}
+                {data.map((rowData, rowIndex) => (
+                    <tr key={rowIndex} className="cursor-pointer hover:bg-gray-100">
+                        {columnDefs.map((column, colIndex) => (
+                            <td key={colIndex} className="px-6 py-4 whitespace-nowrap">
+                                {"field" in column ? (rowData as any)[column.field] : column.render ? column.render(rowData) : null}
                             </td>
                         ))}
                     </tr>
